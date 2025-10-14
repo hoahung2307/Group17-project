@@ -4,7 +4,10 @@ import mongoose from 'mongoose';
 const app = express();
 const port = 3000;
 import routesMain from './routes/routesMain.r.js';
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(routesMain);
+
 async function startServer() {
     try {
         await mongoose.connect("mongodb+srv://buoi4thuchanh:LiHP6X1lRCvkpdBA@cluster0.t8j20uy.mongodb.net/GroupDB")
