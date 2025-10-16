@@ -9,10 +9,10 @@ export const getUsers = async (req, res) => {
 export const postUsers = async (req, res) => {
     try {
       
-    const {user,email} = req.body;
+    const {name,email} = req.body;
         const AddUser = await User(
         {
-            user:user,
+            name:name,
             email:email
         });
 
@@ -20,7 +20,7 @@ export const postUsers = async (req, res) => {
 
         res.status(200).json({
             message:"thêm user và email thành công",
-            user:user,
+            name:name,
             email:email
         })
     } catch (error) {
@@ -52,12 +52,12 @@ export const deleteUsers = async (req, res) => {
 export const updateUsers = async (req, res) => {
     try {
         const {id} = req.params;
-        const {user,email} = req.body;
+        const {name,email} = req.body;
       
-        if(!user && !email){
+        if(!name && !email){
             res.status(200).json({
                 message:"update user và email thành công",
-                user:user,
+                name:name,
                 email:email
             });
         }
