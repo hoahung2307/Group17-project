@@ -1,0 +1,16 @@
+.user-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+.user-item {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+    flex: 0 1 calc(33.333% - 20px);
+}
