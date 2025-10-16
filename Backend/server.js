@@ -1,9 +1,17 @@
 import "dotenv/config"
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 const app = express();
 const port = 3000;
 import routesMain from './routes/routesMain.r.js';
+app.use(
+    cors({
+        origin: "*", 
+      methods: ["GET", "POST", "PUT", "DELETE"], 
+      credentials: true,
+    })
+  );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(routesMain);
