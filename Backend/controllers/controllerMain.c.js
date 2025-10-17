@@ -67,7 +67,7 @@ export const updateUsers = async (req, res) => {
                 message:"user không tồn tại"
             });
         }
-        await User.findByIdAndUpdate(id, {user:user||checkUser.user,email:email||checkUser.email});
+        await User.findByIdAndUpdate(id, {name:name||checkUser.name,email:email||checkUser.email});
         res.status(200).json({
             message:"cập nhật user và email thành công",
         })
