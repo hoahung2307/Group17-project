@@ -50,7 +50,7 @@ function UserList({ refreshTrigger, onEdit }) {
     }, [fetchUsers, refreshTrigger]);
 
     const handleDelete = async (userId) => {
-        if (window.confirm("Đệ có chắc chắn muốn xóa người dùng này không?")) {
+        if (window.confirm("Xóa người dùng này ?")) {
             try {
                 await axios.delete(`http://localhost:3000/users/${userId}`);
                 alert("Xóa người dùng thành công!");
