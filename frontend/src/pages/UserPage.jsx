@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import AddUser from "../components/AddUser";
-import UserList from "../components/UserList";
-import EditUser from "../components/EditUser";
+import AddUser from "../components/Users/AddUser";
+import UserList from "../components/Users/UserList";
+import EditUser from "../components/Users/EditUser";
 import "../styles/UserPage.css";
 
 function UserPage() {
