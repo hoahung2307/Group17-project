@@ -1,55 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from "../../api/api";
+import { useState } from "react";
 
-function EditUser({ user, onUpdate, onCancel }) {
+function AddUser({ onUserAdded, onCancel }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-
-    useEffect(() => {
-        if (user) {
-            setName(user.name);
-            setEmail(user.email);
-        }
-    }, [user]);
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setError('');
+        setError("");
 
         try {
-            const response = await axios.put(`http://localhost:3000/users/${user._id}`, {
-                name,
-                email,
-            });
-
-            if (response.status === 200) {
-                alert("Cập nhật thông tin thành công!");
-                onUpdate();
+            const res = await api.post('http://localhost:3000/users', { name, email });
+            if (res.status === 201 || res.status === 200) {
+                alert("Thêm người dùng thành công!");
+                if (onUserAdded) {
+                    onUserAdded();
+                }
+                setName('');
+                setEmail('');
             } else {
-                setError("Cập nhật thất bại. Vui lòng thử lại.");
+                setError("Thêm người dùng thất bại. Vui lòng thử lại.");
             }
         } catch (err) {
-            console.error("Lỗi khi cập nhật:", err);
-            setError("Có lỗi xảy ra phía máy chủ.");
+            console.error("Lỗi khi thêm user:", err);
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message);
+            } else {
+                setError("Có lỗi xảy ra phía máy chủ.");
+            }
         } finally {
             setLoading(false);
         }
     };
 
-    if (!user) return null;
-
     return (
         <div className="form-container">
-            <h3>Chỉnh sửa thông tin người dùng</h3>
+            <h3>Thêm người dùng mới</h3>
             {error && <p className="error-message">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="edit-name">Tên:</label>
+                    <label htmlFor="name">Tên:</label>
                     <input
-                        id="edit-name"
+                        id="name"
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -58,9 +53,9 @@ function EditUser({ user, onUpdate, onCancel }) {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="edit-email">Email:</label>
+                    <label htmlFor="email">Email:</label>
                     <input
-                        id="edit-email"
+                        id="email"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -70,7 +65,7 @@ function EditUser({ user, onUpdate, onCancel }) {
                 </div>
                 <div className="form-actions">
                     <button className="submit-btn" type="submit" disabled={loading}>
-                        {loading ? 'Đang lưu...' : 'Lưu thay đổi'}
+                        {loading ? 'Đang thêm...' : 'Thêm'}
                     </button>
                     <button className="cancel-btn" type="button" onClick={onCancel} disabled={loading}>
                         Hủy
@@ -81,4 +76,4 @@ function EditUser({ user, onUpdate, onCancel }) {
     );
 }
 
-export default EditUser;
+export default AddUser;

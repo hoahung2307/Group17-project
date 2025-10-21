@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import AddUser from "../components/AddUser";
-import UserList from "../components/UserList";
-import EditUser from "../components/EditUser";
+import AddUser from "../components/Users/AddUser";
+import UserList from "../components/Users/UserList";
+import EditUser from "../components/Users/EditUser";
 import "../styles/UserPage.css";
 
 function UserPage() {
@@ -42,7 +42,7 @@ function UserPage() {
     return (
         <div className="user-page-container">
             <header className="user-page-header">
-                <h1 className="header-title">Danh sách User:</h1>
+                <h1 className="header-title">Danh sách User</h1>
                 <button className="add-btn" onClick={() => setView('add')}>Thêm</button>
             </header>
             <main className="user-page-content">
