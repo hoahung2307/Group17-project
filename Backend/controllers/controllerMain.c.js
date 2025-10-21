@@ -157,3 +157,62 @@ export const getMe = async (req,res) => {
         user:user
     })
 }
+export const updateName = async (req,res) => {
+    const {name} = req.body;
+    const user = await User.findById(req.userId);
+    if(!user){
+        return res.status(404).json({
+            message:"Người Dùng Không Tồn Tại"
+        })
+    }
+    if(!name){
+        return res.status(400).json({
+            message:"Vui lòng nhập tên"
+        })
+    }
+    user.name = name;
+    await user.save();
+    return res.status(200).json({
+        message:"Cập Nhật Tên Thành Công",
+    })
+}
+export const updatePassword = async (req,res) => {
+    const {oldPassword,newPassword} = req.body;
+    const user = await User.findById(req.userId);
+    if(!user){
+        return res.status(404).json({
+            message:"Người Dùng Không Tồn Tại"
+        })
+    }
+    if(!oldPassword && !newPassword){
+        return res.status(400).json({
+            message:"Vui lòng nhập mật khẩu cũ và mật khẩu mới"
+        })
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedPassword;
+    await user.save();
+    return res.status(200).json({
+        message:"Cập Nhật Mật Khẩu Thành Công",
+    })
+}
+export const updateImageProfile = async (req,res) => {
+    const file = req.file;
+    if(!file){
+        return res.status(400).json({
+            message:"Vui lòng upload ảnh"
+        })
+    }
+    const user = await User.findById(req.userId);
+    if(!user){
+        return res.status(404).json({
+            message:"Người Dùng Không Tồn Tại"
+        })
+    }
+    user.avatar = file.path;
+    await user.save();
+    return res.status(200).json({
+        message:"Cập Nhật Ảnh Thành Công",
+    })
+}
