@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import api from "../../api/api";
 
 function UserList({ refreshTrigger, onEdit }) {
     const [users, setUsers] = useState([]);
@@ -14,7 +14,7 @@ function UserList({ refreshTrigger, onEdit }) {
             const maxRetries = 3;
             for (let i = 0; i < maxRetries; i++) {
                 try {
-                    response = await axios.get("http://localhost:3000/users");
+                    response = await api.get("http://localhost:3000/users");
                     break;
                 } catch (e) {
                     if (i === maxRetries - 1) throw e;
@@ -52,7 +52,7 @@ function UserList({ refreshTrigger, onEdit }) {
     const handleDelete = async (userId) => {
         if (window.confirm("Xóa người dùng này ?")) {
             try {
-                await axios.delete(`http://localhost:3000/users/${userId}`);
+                await api.delete(`http://localhost:3000/users/${userId}`);
                 alert("Xóa người dùng thành công!");
                 fetchUsers();
             } catch (err) {

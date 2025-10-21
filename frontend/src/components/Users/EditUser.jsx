@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from "../../api/api";
 
 function EditUser({ user, onUpdate, onCancel }) {
     const [name, setName] = useState('');
@@ -20,7 +20,7 @@ function EditUser({ user, onUpdate, onCancel }) {
         setError('');
 
         try {
-            const response = await axios.put(`http://localhost:3000/users/${user._id}`, {
+            const response = await api.put(`http://localhost:3000/users/${user._id}`, {
                 name,
                 email,
             });

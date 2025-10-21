@@ -42,7 +42,7 @@ function UserPage() {
     return (
         <div className="user-page-container">
             <header className="user-page-header">
-                <h1 className="header-title">Danh sách User:</h1>
+                <h1 className="header-title">Danh sách User</h1>
                 <button className="add-btn" onClick={() => setView('add')}>Thêm</button>
             </header>
             <main className="user-page-content">
