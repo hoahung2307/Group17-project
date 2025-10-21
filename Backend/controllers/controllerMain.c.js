@@ -144,3 +144,16 @@ export const logout = async (req,res) => {
         })
     }
 }
+export const getMe = async (req,res) => {
+    const user = await User.findById(req.userId);
+    if(!user){
+        return res.status(404).json({
+            message:"Người Dùng Không Tồn Tại"
+        })
+    }
+    user.password = "";
+    return res.status(200).json({
+        message:"Lấy Thông Tin Người Dùng Thành Công",
+        user:user
+    })
+}

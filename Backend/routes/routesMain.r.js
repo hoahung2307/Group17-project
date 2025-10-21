@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getUsers, postUsers, deleteUsers, updateUsers, Login, Register, logout } from '../controllers/controllerMain.c.js';
+import { getUsers, postUsers, deleteUsers, updateUsers, Login, Register, logout, getMe } from '../controllers/controllerMain.c.js';
 import { protectRoute } from '../middleware/protectRoute.js';
 router.get('/', (req, res) => {
     res.send('trang chủ');
@@ -13,4 +13,5 @@ router.get('/', (req, res) => {
     router.post("/login", Login);
     router.post("/register", Register);
     router.post("/logout", logout);
+    router.get("/me", protectRoute, getMe);
 export default router;
