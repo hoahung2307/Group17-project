@@ -1,9 +1,10 @@
 import express from 'express';
 const router = express.Router();
 
-import { getUsers, postUsers, deleteUsers, updateUsers, Login, Register, logout, getMe } from '../controllers/controllerMain.c.js';
+import { getUsers, postUsers, deleteUsers, updateUsers, Login, Register, logout, getMe, updateName, updatePassword, updateImageProfile } from '../controllers/controllerMain.c.js';
 import { protectRoute } from '../middleware/protectRoute.js';
 import { validateImageProfile } from '../middleware/validation.js';
+import { uploadCloudinary } from '../config/cloudinary.js';
 router.get('/', (req, res) => {
     res.send('trang chủ');
 });
@@ -15,5 +16,7 @@ router.get('/', (req, res) => {
     router.post("/register", Register);
     router.post("/logout", logout);
     router.get("/profile", protectRoute, getMe);
-    router.put("/profile", protectRoute,upload.single('image'),validateImageProfile, updateProfile);
+    router.put("/profile/image", protectRoute,uploadCloudinary.single('image'),validateImageProfile, updateImageProfile);
+    router.put("/profile/name", protectRoute, updateName);
+    router.put("/profile/password", protectRoute, updatePassword);
 export default router;
