@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
     router.post("/login", Login);
     router.post("/register", Register);
     router.post("/logout", logout);
-    router.get("/profile", protectRoute, getMe);
+    router.get("/profile",protectRoute,getMe);
     router.put("/profile/image", protectRoute,uploadCloudinary.single('image'),validateImageProfile, updateImageProfile);
     router.put("/profile/name", protectRoute, updateName);
     router.put("/profile/password", protectRoute, updatePassword);
