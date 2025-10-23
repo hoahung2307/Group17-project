@@ -10,7 +10,10 @@ const userSchema = new mongoose.Schema({
     enum:["admin","user"],
     default:"user",
   },
-  avatar: String,
+  avatar: {
+    type: String,
+    default:"",
+  },
   status:{
     type:String,
     enum:["active","banned"],

@@ -81,6 +81,7 @@ export const updateUsers = async (req, res) => {
     }
 }
 export const Login = async (req,res) =>{
+    console.log("controller login");
     const {email,password} = req.body;
     const isEmail = await User.exists({ email: email });
         if (!isEmail) {
@@ -103,7 +104,7 @@ export const Login = async (req,res) =>{
             })
         }
 
-        const token = generateToken(user._id, rememberMe || "false");
+        const token = generateToken(user._id,  "false");
         setToken(res, token);
         return res.status(200).json({
             message:"login thành công",
@@ -111,6 +112,7 @@ export const Login = async (req,res) =>{
 
 }
 export const Register = async (req,res) =>{
+    console.log("controller register");
     const {email,password,name} = req.body;
     const isEmail = await User.exists({ email: email });
     if(isEmail){
@@ -121,7 +123,7 @@ export const Register = async (req,res) =>{
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
+    
     const user = await User.create({ email: email, password: hashedPassword, name: name });
     if(!user){
         return res.status(400).json({
@@ -133,6 +135,7 @@ export const Register = async (req,res) =>{
     })
 }
 export const logout = async (req,res) => {
+    console.log("controller logout");
     try {
     res.cookie("jwt", "", { maxAge: 0 });
         return res.status(200).json({
