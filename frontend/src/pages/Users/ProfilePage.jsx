@@ -1,7 +1,10 @@
+import Logout from "../components/Auth/Logout"
+
+
 function ProfilePage () {
     return (
         <div>
-            <h1>Trang cá nhân</h1>
+            <Logout />
         </div>
     )
 }
