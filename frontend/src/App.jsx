@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import UserPage from './pages/UserPage'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
+import UserPage from './pages/Admin/UserPage'
+import Home from './pages/Home'
+import LoginPage from './pages/Auth/LoginPage'
+import RegisterPage from './pages/Auth/RegisterPage'
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom"
 import ProtectedRoute from './components/Auth/ProtectedRoute'
 
@@ -13,7 +14,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path = "/" element = {
-            <UserPage/>
+            <Home/>
           } />
           <Route path = "/login" element = {<LoginPage/>}/>
           <Route path = "/register" element = {<RegisterPage/>}/>

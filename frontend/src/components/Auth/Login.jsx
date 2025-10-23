@@ -26,9 +26,8 @@ function Login({ route }) {
                 password
             });
             if (res.status === 200) {
-                localStorage.setItem(ACCESS_TOKEN, res.data.access);
-                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                window.history.replaceState(null, 'Home', '/');
+                // localStorage.setItem(ACCESS_TOKEN, res.data.access);
+                // localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
                 navigate("/");
             } else {
                 setErrors(res.message);

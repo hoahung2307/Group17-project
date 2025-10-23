@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import AddUser from "../components/Users/AddUser";
-import UserList from "../components/Users/UserList";
-import EditUser from "../components/Users/EditUser";
-import "../styles/UserPage.css";
+import AddUser from "../../components/Admin/AddUser";
+import UserList from "../../components/Admin/UserList";
+import EditUser from "../../components/Admin/EditUser";
+import "../../styles/UserPage.css";
 
 function UserPage() {
     const [refreshTrigger, setRefreshTrigger] = useState(0);
