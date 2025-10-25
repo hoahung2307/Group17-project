@@ -1,12 +1,20 @@
-import Logout from "../components/Auth/Logout"
+import { useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import Profile from '../../components/Users/Profile';
 
+function ProfilePage() {
+    const { setHeaderTitle } = useOutletContext();
 
-function ProfilePage () {
+    useEffect(() => {
+        setHeaderTitle('Trang cá nhân');
+        return () => {
+            setHeaderTitle('Trang Chủ');
+        };
+    }, [setHeaderTitle]);
+
     return (
-        <div>
-            <Logout />
-        </div>
-    )
+        <Profile />
+    );
 }
 
-export default Profile
+export default ProfilePage;

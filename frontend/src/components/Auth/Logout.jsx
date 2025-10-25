@@ -1,23 +1,19 @@
-import { useState } from "react"
-import api from "../../api/api"
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../contexts/AuthContext.jsx';
 
 function Logout () {
+    const { logout } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-    const handleLogout = async(e) => {
-        const res = await api.post("http://localhost:3000/logout")
-        console.log(res)
-        if (res.status === 200) {
-            window.location.href = "/login"
-        } else {
-            alert("Đăng xuất không thành công")
-        }
-    }
+    const handleLogout = async () => {
+        await logout();
+        navigate('/');
+    };
 
     return (
-        <div>
-            <button onClick={handleLogout}>Đăng xuất</button>
-        </div>
+        <button onClick={handleLogout}>Đăng Xuất</button>
     )
 }
 
-export default Logout
+export default Logout;

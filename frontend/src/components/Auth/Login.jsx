@@ -1,33 +1,28 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants/constants";
-import "../../styles/LoginPage.css"
+import { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../../api/api";
+import AuthContext from "../../contexts/AuthContext.jsx";
+import "../../styles/LoginPage.css"
 
-
-function Login({ route }) {
+function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState("")
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
-
-    useEffect(() => {
-    }, []);
+    const { login } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         setLoading(true);
         setErrors("");
         e.preventDefault();
         try {
-            const res = await api.post(route, {
+            const res = await api.post("/login", {
                 email,
                 password
             });
             if (res.status === 200) {
-                // localStorage.setItem(ACCESS_TOKEN, res.data.access);
-                // localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                login();
                 navigate("/");
             } else {
                 setErrors(res.message);
@@ -56,6 +51,13 @@ function Login({ route }) {
                 <input className="login-input" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <button className="login-button" type="submit">{loading ? 'Đang đăng nhập...' : 'Đăng nhập'}</button>
+            <div className="login-signup">
+                <button type="button" className="register-button" onClick={() => navigate('/register')}>Đăng ký</button>
+            </div>
+            <div className="login-links">
+                <Link to="/reset-password">Quên Mật Khẩu?</Link>
+            </div>
+
         </form>
     </div>
 }

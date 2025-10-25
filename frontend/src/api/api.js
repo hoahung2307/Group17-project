@@ -1,23 +1,33 @@
-import axios from 'axios'
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants/constants'
+import axios from 'axios';
 
-
-const baseURL = import.meta.env.VITE_API_URL
+const baseURL = import.meta.env.VITE_API_URL;
 const api = axios.create({
-    baseURL
+    baseURL,
+    withCredentials: true
+});
 
-})
-api.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem(ACCESS_TOKEN)
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`
+export const updateProfileImage = (formData) => {
+    return api.put('/profile/image', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
         }
-        return config
-    },
-    (error) => {
-        return Promise.reject(error)
-    }
-)
+    });
+};
 
-export default api
+export const updateProfileName = (name) => {
+    return api.put('/profile/name', { name });
+};
+
+export const requestPasswordReset = (email) => {
+    return api.post('/reset-password', { email });
+};
+
+export const resetPassword = (token, password) => {
+    return api.post(`/reset-password/${token}`, { password });
+};
+
+export const deleteUser = (id) => {
+    return api.delete(`/users/${id}`);
+};
+
+export default api;

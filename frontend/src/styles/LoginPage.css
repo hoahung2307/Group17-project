@@ -64,3 +64,36 @@
 .login-button:hover {
     background-color: #0056b3;
 }
+
+.login-links {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.login-links a {
+    color: #007bff;
+    text-decoration: none;
+
+}
+
+.login-links a:hover {
+    text-decoration: underline;
+}
+
+.register-button {
+    background-color: #ffffff;
+    color: #007bff;
+    padding: 0.75rem;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.register-button:hover {
+    background-color: #d4e8f3;
+}

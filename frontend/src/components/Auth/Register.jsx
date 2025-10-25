@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants/constants";
 import "../../styles/LoginPage.css"
 import api from "../../api/api";
@@ -22,6 +22,11 @@ function Register({ route }) {
         setLoading(true);
         setErrors("");
         e.preventDefault();
+        if (!name || !email || !password) {
+            setErrors("Vui lòng điền đầy đủ thông tin.");
+            setLoading(false);
+            return;
+        }
         try {
             const res = await api.post(route, {
                 email,
@@ -53,7 +58,7 @@ function Register({ route }) {
                     </div>
                 )}
             </div>
-            <div  className="login-input-container">
+            <div className="login-input-container">
                 <label className="login-label" htmlFor="name">Tên</label>
                 <input className="login-input" id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
                 <label className="login-label" htmlFor="email">Email</label>
@@ -62,6 +67,9 @@ function Register({ route }) {
                 <input className="login-input" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <button className="login-button" type="submit">{loading ? 'Đang đăng ký...' : 'Đăng ký'}</button>
+            <div className="login-links">
+                <Link to="/login">Quay lại Đăng nhập</Link>
+            </div>
         </form>
     </div>
 }
