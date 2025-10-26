@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import api from "../../api/api";
 
-function UserList({ refreshTrigger, onEdit }) {
+function UserList({ refreshTrigger }) {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,7 +14,7 @@ function UserList({ refreshTrigger, onEdit }) {
             const maxRetries = 3;
             for (let i = 0; i < maxRetries; i++) {
                 try {
-                    response = await api.get("http://localhost:3000/users");
+                    response = await api.get("http://localhost:3000/admin/users");
                     break;
                 } catch (e) {
                     if (i === maxRetries - 1) throw e;
@@ -52,7 +52,7 @@ function UserList({ refreshTrigger, onEdit }) {
     const handleDelete = async (userId) => {
         if (window.confirm("Xóa người dùng này?")) {
             try {
-                await api.delete(`http://localhost:3000/users/${userId}`);
+                await api.delete(`http://localhost:3000/admin/users/${userId}`);
                 alert("Xóa người dùng thành công!");
                 fetchUsers();
             } catch (err) {
@@ -76,7 +76,6 @@ function UserList({ refreshTrigger, onEdit }) {
                                 <p><strong>Email:</strong> {user.email}</p>
                             </div>
                             <div className="user-item-actions">
-                                <button className="edit-btn" onClick={() => onEdit(user)}>Sửa</button>
                                 <button className="delete-btn" onClick={() => handleDelete(user._id || user.id)}>Xóa</button>
                             </div>
                         </div>

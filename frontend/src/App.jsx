@@ -7,7 +7,9 @@ import ProfilePage from './pages/Users/ProfilePage'
 import {BrowserRouter, Routes, Route} from "react-router-dom"
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import ProtectedRoute from './components/Auth/ProtectedRoute'
-
+import AdminRoute from './components/Admin/AdminRoute.jsx'
+import AdminLoginPage from './pages/Admin/AdminLoginPage.jsx';
+import UserPage from './pages/Admin/UserPage.jsx'
 
 function App() {
 
@@ -27,6 +29,14 @@ function App() {
           <Route path = "/register" element = {<RegisterPage/>}/>
           <Route path = "/reset-password" element = {<ForgotPasswordPage/>}/>
           <Route path = "/reset-password/:token" element = {<ResetPasswordPage/>}/>
+          <Route path = "/admin/login" element = {<AdminLoginPage/>}/>
+          <Route path = "/admin" element = {
+            <ProtectedRoute>
+              <AdminRoute>
+                <UserPage/>
+              </AdminRoute>
+            </ProtectedRoute>
+          }/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

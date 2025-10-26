@@ -7,7 +7,7 @@ const api = axios.create({
 });
 
 export const updateProfileImage = (formData) => {
-    return api.put('/profile/image', formData, {
+    return api.put('/user/profile/avatar', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
@@ -15,19 +15,19 @@ export const updateProfileImage = (formData) => {
 };
 
 export const updateProfileName = (name) => {
-    return api.put('/profile/name', { name });
+    return api.put('/user/profile/name', { name });
 };
 
 export const requestPasswordReset = (email) => {
-    return api.post('/reset-password', { email });
+    return api.post('/auth/forgot-password', { email });
 };
 
 export const resetPassword = (token, password) => {
-    return api.post(`/reset-password/${token}`, { password });
+    return api.post(`/auth/reset-password/${token}`, { newPassword: password });
 };
 
 export const deleteUser = (id) => {
-    return api.delete(`/users/${id}`);
+    return api.delete(`/user/${id}`);
 };
 
 export default api;

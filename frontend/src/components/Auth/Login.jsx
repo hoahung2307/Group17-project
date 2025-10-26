@@ -17,12 +17,13 @@ function Login() {
         setErrors("");
         e.preventDefault();
         try {
-            const res = await api.post("/login", {
+            const res = await api.post("/auth/login", {
                 email,
                 password
             });
+            console.log(res.data);
             if (res.status === 200) {
-                login();
+                login(res.data.user);
                 navigate("/");
             } else {
                 setErrors(res.message);

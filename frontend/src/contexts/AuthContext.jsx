@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
     const checkUser = async () => {
         try {
-            const response = await api.get('/profile');
+            const response = await api.get('/user/profile');
             setUser(response.data.user);
         } catch (error) {
             setUser(null);
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await api.post('/logout');
+            await api.post('/auth/logout');
             setUser(null);
         } catch (error) {
             console.error("Failed to logout", error);

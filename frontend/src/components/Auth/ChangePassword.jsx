@@ -15,7 +15,7 @@ function ChangePassword({ onClose }) {
         setError('');
         setMessage('');
         try {
-            const res = await api.put('/profile/password', { oldPassword, newPassword });
+            const res = await api.put('/user/profile/password', { oldPassword, newPassword });
             setMessage(res.data.message + " Tự động đăng xuất sau 5 giây.");
             setOldPassword('');
             setNewPassword('');

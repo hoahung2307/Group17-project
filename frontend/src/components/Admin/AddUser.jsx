@@ -13,7 +13,7 @@ function AddUser({ onUserAdded, onCancel }) {
         setError("");
 
         try {
-            const res = await api.post('http://localhost:3000/users', { name, email });
+            const res = await api.post('http://localhost:3000/admin/users', { name, email });
             if (res.status === 201 || res.status === 200) {
                 alert("Thêm người dùng thành công!");
                 if (onUserAdded) {
