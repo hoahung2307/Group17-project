@@ -11,7 +11,7 @@ import routesMain from './routes/routesMain.r.js';
 
 app.use(
     cors({
-        origin: "*", 
+        origin: "http://localhost:5173", 
       methods: ["GET", "POST", "PUT", "DELETE"], 
       credentials: true,
     })

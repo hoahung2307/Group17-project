@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const logFilePath = path.join(process.cwd(), "Backend/logs/admin-actions.log");
+const logFilePath = path.join(process.cwd(), "../Backend/logs/admin-actions.log");
 
 export const logAdminAction = (adminId, action, targetUser) => {
   const timestamp = new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
