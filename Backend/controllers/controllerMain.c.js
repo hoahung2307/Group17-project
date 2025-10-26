@@ -318,7 +318,7 @@ export const forgotPassword = async (req,res) => {
           pass: "hgsp ndag tttv igcw",
         },
       });
-      const resetLink = `http://localhost:3000/reset-password/${resetPasswordToken}`;
+      const resetLink = `http://localhost:5173/reset-password/${resetPasswordToken}`;
       await transporter.sendMail({
         from: "vinh223522@student.nctu.edu.vn",
         to: email,
