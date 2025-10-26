@@ -2,17 +2,22 @@ import "dotenv/config"
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
+
 const app = express();
 const port = 3000;
 import routesMain from './routes/routesMain.r.js';
+
 app.use(
     cors({
-        origin: "*", 
+        origin: "http://localhost:5173", 
       methods: ["GET", "POST", "PUT", "DELETE"], 
       credentials: true,
     })
   );
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(routesMain);
 
