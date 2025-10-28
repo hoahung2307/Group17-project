@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   password: String,
   role:{
     type:String,
-    enum:["admin","user"],
+    enum:["admin","user","moderator"],
     default:"user",
   },
   avatar: {
@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
     type:Date,
     default:Date.now,
 },
+  refreshToken: {
+    type: String,
+    default: "",
+  },
 });
 
 

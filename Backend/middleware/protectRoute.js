@@ -1,7 +1,10 @@
 import jwt from "jsonwebtoken";
 
 export const protectRoute = async (req, res, next) => {
-  const token = req.cookies.jwt;
+  // Prefer Authorization: Bearer <token>, fallback to cookie
+  const authHeader = req.headers.authorization || "";
+  const bearerToken = authHeader.startsWith("Bearer ") ? authHeader.substring(7) : null;
+  const token = bearerToken || req.cookies.jwt;
   console.log("Client kết nối Backend");
 
   if (!token) {

@@ -4,6 +4,7 @@ import nodemailer from "nodemailer";
 import { logAdminAction } from "../utils/logger.js";
 import bcrypt from "bcrypt";
 import { generateToken, setToken } from "../utils/tokenconfig.js";
+import jwt from "jsonwebtoken";
 export const getUsers = async (req, res) => {
     console.log("controller get users", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }));
     const users = await User.find().select('-password');
@@ -121,9 +122,13 @@ export const Login = async (req,res) =>{
         }
 
         const token = generateToken(user._id,  "false");
-        setToken(res, token);
+        setToken(res, token, "false");
+        const refreshToken = generateToken(user._id,  "true");
+        await User.findByIdAndUpdate(user._id, {refreshToken:refreshToken});
+
         return res.status(200).json({
             message:"login thành công",
+            refreshToken:refreshToken
         })
 
 }
@@ -176,6 +181,36 @@ export const logout = async (req,res) => {
             message:"Đăng Xuất Thất Bại",
             error:error
         })
+    }
+}
+
+export const refreshAccessToken = async (req, res) => {
+    try {
+        const { refreshToken } = req.body;
+        if (!refreshToken) {
+            return res.status(400).json({ message: "Thiếu refreshToken" });
+        }
+
+        let decoded;
+        try {
+            decoded = jwt.verify(refreshToken, "group17");
+        } catch (err) {
+            return res.status(401).json({ message: "Refresh token không hợp lệ hoặc hết hạn" });
+        }
+
+        const user = await User.findById(decoded.userId);
+        if (!user || user.refreshToken !== refreshToken) {
+            return res.status(401).json({ message: "Refresh token không hợp lệ" });
+        }
+
+        const newAccessToken = generateToken(user._id, "false");
+        setToken(res, newAccessToken, "false");
+
+        return res.status(200).json({
+            message: "Làm mới access token thành công",
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Lỗi server", error: error.message });
     }
 }
 export const getMe = async (req,res) => {

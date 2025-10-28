@@ -1,9 +1,26 @@
 import express from 'express';
 const router = express.Router();
 
-import { getUsers, postUsers, deleteUsers, updateUsers, Login, Register, logout, getMe, updateName, updatePassword, updateImageProfile , forgotPassword, resetPassword , deleteAccountFromAdmin , deleteAccount } from '../controllers/controllerMain.c.js';
+import { 
+    getUsers, 
+    postUsers, 
+    deleteUsers, 
+    updateUsers, 
+    Login, 
+    Register, 
+    logout, 
+    getMe, 
+    updateName, 
+    updatePassword, 
+    updateImageProfile , 
+    forgotPassword, 
+    refreshAccessToken,
+    resetPassword , 
+    deleteAccountFromAdmin , 
+    deleteAccount 
+} from '../controllers/controllerMain.c.js';
 import { protectRoute } from '../middleware/protectRoute.js';
-import { checkRole } from '../middleware/checkrole.js';
+import { checkRoleAdmin, checkRoleModerator, checkRoleUser } from '../middleware/checkrole.js';
 import { validateImageProfile } from '../middleware/validation.js';
 import { uploadCloudinary } from '../config/cloudinary.js';
     //user
@@ -21,8 +38,9 @@ import { uploadCloudinary } from '../config/cloudinary.js';
     router.post("/auth/logout", logout);
     router.post("/auth/forgot-password", forgotPassword);
     router.post("/auth/reset-password/:resetPasswordToken", resetPassword);
+    router.post("/auth/refresh", refreshAccessToken);
     
     //admin
-    router.delete("/admin/users/:id", protectRoute, checkRole, deleteAccountFromAdmin);
-    router.get("/admin/users", protectRoute, checkRole, getUsers);
+    router.delete("/admin/users/:id", protectRoute, checkRoleAdmin, deleteAccountFromAdmin);
+    router.get("/admin/users", protectRoute, checkRoleAdmin, getUsers);
 export default router;
