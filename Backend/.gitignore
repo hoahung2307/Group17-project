@@ -1,0 +1,27 @@
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Node modules
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+.gitignore
+

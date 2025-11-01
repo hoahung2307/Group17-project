@@ -13,7 +13,7 @@ app.set('trust proxy', 1);
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -25,7 +25,8 @@ app.use(routesMain);
 
 async function startServer() {
   try {
-    await mongoose.connect("mongodb+srv://buoi4thuchanh:LiHP6X1lRCvkpdBA@cluster0.t8j20uy.mongodb.net/GroupDB")
+   
+    await mongoose.connect(process.env.MONGODB_URI)
       .then(() => console.log("Connected to MongoDB"))
       .catch(err => console.error("Connection error:", err));
     app.listen(port, () => {
