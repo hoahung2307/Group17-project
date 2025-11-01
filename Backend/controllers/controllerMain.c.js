@@ -144,7 +144,6 @@ export const Login = async (req, res) => {
   setToken(res, token, "false");
   const refreshToken = generateToken(user._id, "true");
   await User.findByIdAndUpdate(user._id, { refreshToken: refreshToken });
-  User.save();
 
   logActivity(user._id.toString(), "LOGIN_SUCCESS", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }));
 
