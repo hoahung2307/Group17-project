@@ -1,46 +1,51 @@
 import express from 'express';
 const router = express.Router();
 
-import { 
-    getUsers, 
-    postUsers, 
-    deleteUsers, 
-    updateUsers, 
-    Login, 
-    Register, 
-    logout, 
-    getMe, 
-    updateName, 
-    updatePassword, 
-    updateImageProfile , 
-    forgotPassword, 
-    refreshAccessToken,
-    resetPassword , 
-    deleteAccountFromAdmin , 
-    deleteAccount 
+import {
+  getUsers,
+  postUsers,
+  deleteUsers,
+  updateUsers,
+  Login,
+  Register,
+  logout,
+  getMe,
+  updateName,
+  updatePassword,
+  updateImageProfile,
+  forgotPassword,
+  refreshAccessToken,
+  resetPassword,
+  deleteAccountFromAdmin,
+  deleteAccount
 } from '../controllers/controllerMain.c.js';
 import { protectRoute } from '../middleware/protectRoute.js';
 import { checkRoleAdmin, checkRoleModerator, checkRoleUser } from '../middleware/checkrole.js';
 import { validateImageProfile } from '../middleware/validation.js';
+import { logActivityMiddleware } from '../middleware/logActivityMiddleware.js';
 import { uploadCloudinary } from '../config/cloudinary.js';
-    //user
-    router.post("/user", postUsers);
-    router.delete("/user/:id", deleteUsers);
-    router.put("/user/:id", updateUsers);
-    router.post("/user/deleteAccount", deleteAccount);
-    router.get("/user/profile",protectRoute,getMe);
-    router.put("/user/profile/avatar", protectRoute,uploadCloudinary.single('image'),validateImageProfile, updateImageProfile);
-    router.put("/user/profile/name", protectRoute, updateName);
-    router.put("/user/profile/password", protectRoute, updatePassword);
-    //auth
-    router.post("/auth/login", Login);
-    router.post("/auth/register", Register);
-    router.post("/auth/logout", logout);
-    router.post("/auth/forgot-password", forgotPassword);
-    router.post("/auth/reset-password/:resetPasswordToken", resetPassword);
-    router.post("/auth/refresh", refreshAccessToken);
-    
-    //admin
-    router.delete("/admin/users/:id", protectRoute, checkRoleAdmin, deleteAccountFromAdmin);
-    router.get("/admin/users", protectRoute, checkRoleAdmin, getUsers);
+import { loginRateLimit } from '../middleware/rateLimit.js';
+
+// User routes
+router.post("/user", logActivityMiddleware('CREATE_USER'), postUsers);
+router.delete("/user/:id", logActivityMiddleware('DELETE_USER'), deleteUsers);
+router.put("/user/:id", logActivityMiddleware('UPDATE_USER'), updateUsers);
+router.post("/user/deleteAccount", logActivityMiddleware('DELETE_ACCOUNT'), deleteAccount);
+router.get("/user/profile", protectRoute, logActivityMiddleware('GET_PROFILE'), getMe);
+router.put("/user/profile/avatar", protectRoute, uploadCloudinary.single('image'), validateImageProfile, logActivityMiddleware('UPDATE_AVATAR'), updateImageProfile);
+router.put("/user/profile/name", protectRoute, logActivityMiddleware('UPDATE_NAME'), updateName);
+router.put("/user/profile/password", protectRoute, logActivityMiddleware('UPDATE_PASSWORD'), updatePassword);
+
+// Auth routes
+router.post("/auth/login", loginRateLimit, logActivityMiddleware('LOGIN_ATTEMPT'), Login);
+router.post("/auth/register", logActivityMiddleware('REGISTER'), Register);
+router.post("/auth/logout", logActivityMiddleware('LOGOUT'), logout);
+router.post("/auth/forgot-password", logActivityMiddleware('FORGOT_PASSWORD'), forgotPassword);
+router.post("/auth/reset-password/:resetPasswordToken", logActivityMiddleware('RESET_PASSWORD'), resetPassword);
+router.post("/auth/refresh", logActivityMiddleware('REFRESH_ACCESS_TOKEN'), refreshAccessToken);
+
+// Admin routes
+router.delete("/admin/users/:id", protectRoute, checkRoleAdmin, deleteAccountFromAdmin);
+router.get("/admin/users", protectRoute, checkRoleAdmin, getUsers);
+
 export default router;

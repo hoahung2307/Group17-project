@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 
 export const protectRoute = async (req, res, next) => {
-  // Prefer Authorization: Bearer <token>, fallback to cookie
   const authHeader = req.headers.authorization || "";
   const bearerToken = authHeader.startsWith("Bearer ") ? authHeader.substring(7) : null;
   const token = bearerToken || req.cookies.jwt;
@@ -16,10 +15,7 @@ export const protectRoute = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, "group17");
-
-   
     req.userId = decoded.userId;
-
     next();
   } catch (error) {
     return res.status(401).json({
