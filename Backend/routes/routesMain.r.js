@@ -18,6 +18,7 @@ import {
   resetPassword,
   deleteAccountFromAdmin,
   deleteAccount
+  ,getActivityLogs
 } from '../controllers/controllerMain.c.js';
 import { protectRoute } from '../middleware/protectRoute.js';
 import { checkRoleAdmin, checkRoleModerator, checkRoleUser } from '../middleware/checkrole.js';
@@ -25,6 +26,7 @@ import { validateImageProfile } from '../middleware/validation.js';
 import { logActivityMiddleware } from '../middleware/logActivityMiddleware.js';
 import { uploadCloudinary } from '../config/cloudinary.js';
 import { loginRateLimit } from '../middleware/rateLimit.js';
+import { blockUser, unblockUser } from '../controllers/moderatorController.js';
 
 // User routes
 router.post("/user", logActivityMiddleware('CREATE_USER'), postUsers);
@@ -47,5 +49,12 @@ router.post("/auth/refresh", logActivityMiddleware('REFRESH_ACCESS_TOKEN'), refr
 // Admin routes
 router.delete("/admin/users/:id", protectRoute, checkRoleAdmin, deleteAccountFromAdmin);
 router.get("/admin/users", protectRoute, checkRoleAdmin, getUsers);
+// Admin activity logs
+router.get("/admin/logs", protectRoute, checkRoleAdmin, getActivityLogs);
+
+// Moderator routes
+router.patch("/users/:id/block", protectRoute, checkRoleModerator, blockUser);
+router.patch("/users/:id/unblock", protectRoute, checkRoleModerator, unblockUser);
+router.get("/moderator/users", protectRoute, checkRoleModerator, getUsers);
 
 export default router;

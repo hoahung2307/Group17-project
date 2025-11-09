@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import User from "../models/modelMain.m.js";
 
 export const protectRoute = async (req, res, next) => {
   const authHeader = req.headers.authorization || "";
@@ -15,6 +16,16 @@ export const protectRoute = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, "group17");
+    
+    // Kiểm tra người dùng có bị chặn không
+    const user = await User.findById(decoded.userId);
+    if (user && user.isBlocked && user.role === 'user') {
+      return res.status(403).json({
+        success: false,
+        error: "Tài khoản của bạn đã bị chặn. Vui lòng liên hệ quản trị viên.",
+      });
+    }
+
     req.userId = decoded.userId;
     next();
   } catch (error) {

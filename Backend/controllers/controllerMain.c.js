@@ -5,6 +5,8 @@ import { logAdminAction, logActivity } from "../utils/logger.js";
 import bcrypt from "bcrypt";
 import { generateToken, setToken } from "../utils/tokenconfig.js";
 import jwt from "jsonwebtoken";
+import fs from "fs";
+import path from "path";
 
 export const getUsers = async (req, res) => {
   console.log("controller get users", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }));
@@ -526,5 +528,33 @@ export const resetPassword = async (req, res) => {
       message: "Lỗi server khi đặt lại mật khẩu",
       error: error.message,
     });
+  }
+};
+
+export const getActivityLogs = async (req, res) => {
+  try {
+    console.log("controller get activity logs", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }));
+    const { limit } = req.query;
+    const activityLogPath = path.join(process.cwd(), "Backend/logs/user-activity.log");
+
+    if (!fs.existsSync(activityLogPath)) {
+      return res.status(200).json({ message: "Không có log nào", logs: [] });
+    }
+
+    const data = await fs.promises.readFile(activityLogPath, "utf-8");
+    let lines = data.split(/\r?\n/).filter((l) => l && l.trim().length > 0);
+
+    if (limit) {
+      const n = parseInt(limit, 10);
+      if (!isNaN(n) && n > 0) {
+        lines = lines.slice(-n);
+      }
+    }
+
+    logActivity(req.userId || "UNKNOWN", "GET_ACTIVITY_LOGS_SUCCESS", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }));
+    return res.status(200).json({ message: "Lấy logs thành công", logs: lines });
+  } catch (error) {
+    logActivity(req.userId || "UNKNOWN", "GET_ACTIVITY_LOGS_FAILED", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }));
+    return res.status(500).json({ message: "Lỗi khi đọc logs", error: error.message });
   }
 };

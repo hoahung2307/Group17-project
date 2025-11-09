@@ -9,7 +9,10 @@ import { AuthProvider } from './contexts/AuthContext.jsx'
 import ProtectedRoute from './components/Auth/ProtectedRoute'
 import AdminRoute from './components/Admin/AdminRoute.jsx'
 import AdminLoginPage from './pages/Admin/AdminLoginPage.jsx';
-import UserPage from './pages/Admin/UserPage.jsx'
+import UserPage from './pages/Admin/UserPage.jsx';
+import ModeratorLoginPage from './pages/Moderator/ModeratorLoginPage.jsx';
+import UserManagementPage from './pages/Moderator/UserManagementPage.jsx';
+import ModeratorRoute from './components/Moderator/ModeratorRoute.jsx';
 
 function App() {
 
@@ -35,6 +38,14 @@ function App() {
               <AdminRoute>
                 <UserPage/>
               </AdminRoute>
+            </ProtectedRoute>
+          }/>
+          <Route path = "/moderator/login" element = {<ModeratorLoginPage/>}/>
+          <Route path = "/moderator" element = {
+            <ProtectedRoute>
+              <ModeratorRoute>
+                <UserManagementPage/>
+              </ModeratorRoute>
             </ProtectedRoute>
           }/>
         </Routes>
