@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import api from "../../api/api";
 import AuthContext from "../../contexts/AuthContext.jsx";
 import "../../styles/LoginPage.css"
-
+import { REFRESH_TOKEN } from "../../constants/constants.js";
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -24,6 +24,7 @@ function Login() {
             console.log(res.data);
             if (res.status === 200) {
                 login(res.data.user);
+                localStorage.setItem(REFRESH_TOKEN, res.data.refreshToken);
                 navigate("/");
             } else {
                 setErrors(res.message);

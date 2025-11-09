@@ -1,33 +1,34 @@
-// models/User.js
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
-  role:{
-    type:String,
-    enum:["admin","user"],
-    default:"user",
+  role: {
+    type: String,
+    enum: ["admin", "user", "moderator"],
+    default: "user",
   },
   avatar: {
     type: String,
-    default:"",
+    default: "",
   },
-  status:{
-    type:String,
-    enum:["active","banned"],
-    default:"active",
+  isBlocked: {
+    type: Boolean,
+    default: false
   },
-  resetPasswordToken:{
-    type:String,
-    default:"",
+  resetPasswordToken: {
+    type: String,
+    default: "",
   },
-  resetPasswordExpire:{
-    type:Date,
-    default:Date.now,
-},
+  resetPasswordExpire: {
+    type: Date,
+    default: Date.now,
+  },
+  refreshToken: {
+    type: String,
+    default: "",
+  },
 });
-
 
 export default mongoose.model("User", userSchema);

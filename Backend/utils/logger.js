@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 
 const logFilePath = path.join(process.cwd(), "Backend/logs/admin-actions.log");
+const activityLogPath = path.join(process.cwd(), "Backend/logs/user-activity.log");
 
 export const logAdminAction = (adminId, action, targetUser) => {
   const timestamp = new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
@@ -10,6 +11,22 @@ export const logAdminAction = (adminId, action, targetUser) => {
   fs.appendFile(logFilePath, logMessage, (err) => {
     if (err) {
       console.error("Lỗi khi ghi log admin:", err);
+    }
+  });
+};
+
+export const logActivity = (userId, action, timestamp = null) => {
+  const logTimestamp = timestamp || new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
+  const logMessage = `[${logTimestamp}] USER: ${userId} → ACTION: ${action}\n`;
+
+  const logDir = path.join(process.cwd(), "Backend/logs");
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
+  }
+
+  fs.appendFile(activityLogPath, logMessage, (err) => {
+    if (err) {
+      console.error("Lỗi khi ghi log activity:", err);
     }
   });
 };

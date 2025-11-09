@@ -5,6 +5,10 @@ function UserList({ refreshTrigger }) {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    // State cho logs
+    const [logs, setLogs] = useState([]);
+    const [isLoadingLogs, setIsLoadingLogs] = useState(false);
+    const [errorLogs, setErrorLogs] = useState(null);
 
     const fetchUsers = useCallback(async () => {
         try {
@@ -45,9 +49,33 @@ function UserList({ refreshTrigger }) {
         }
     }, []);
 
+    // Lấy danh sách users
     useEffect(() => {
         fetchUsers();
     }, [fetchUsers, refreshTrigger]);
+
+    // Lấy logs khi component mount
+    useEffect(() => {
+        const fetchLogs = async () => {
+            setIsLoadingLogs(true);
+            setErrorLogs(null);
+            try {
+                const response = await api.get("/admin/logs?limit=50");
+                if (response.data && Array.isArray(response.data.logs)) {
+                    setLogs(response.data.logs);
+                } else {
+                    setLogs([]);
+                    setErrorLogs("Dữ liệu log không đúng định dạng.");
+                }
+            } catch (err) {
+                setLogs([]);
+                setErrorLogs(err.message || "Có lỗi khi tải logs.");
+            } finally {
+                setIsLoadingLogs(false);
+            }
+        };
+        fetchLogs();
+    }, []);
 
     const handleDelete = async (userId) => {
         if (window.confirm("Xóa người dùng này?")) {
@@ -67,6 +95,7 @@ function UserList({ refreshTrigger }) {
 
     return (
         <div className="user-list-container">
+            {/* Danh sách người dùng */}
             {users && users.length > 0 ? (
                 <div className="user-list">
                     {users.map((user) => (
@@ -84,6 +113,26 @@ function UserList({ refreshTrigger }) {
             ) : (
                 <div className="no-users-message">Không tìm thấy người dùng nào.</div>
             )}
+
+            {/* Hiển thị logs cho admin */}
+            <div className="admin-logs-section" style={{ marginTop: '2rem' }}>
+                <h2>Hoạt động hệ thống (Logs)</h2>
+                {isLoadingLogs ? (
+                    <div className="loading-message">Đang tải logs...</div>
+                ) : errorLogs ? (
+                    <div className="error-message">{errorLogs}</div>
+                ) : logs.length > 0 ? (
+                    <div className="logs-list" style={{ maxHeight: '300px', overflowY: 'auto', background: '#f9f9f9', border: '1px solid #ddd', padding: '1rem' }}>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                            {logs.map((log, idx) => (
+                                <li key={idx} style={{ fontSize: '0.95rem', marginBottom: '0.5rem', borderBottom: '1px solid #eee', paddingBottom: '0.3rem' }}>{log}</li>
+                            ))}
+                        </ul>
+                    </div>
+                ) : (
+                    <div className="no-logs-message">Không có log nào.</div>
+                )}
+            </div>
         </div>
     );
 }
