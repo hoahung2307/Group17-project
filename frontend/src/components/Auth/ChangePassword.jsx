@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import api from '../../api/api';
-import AuthContext from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import '../../styles/ChangePassword.css';
 
 function ChangePassword({ onClose }) {
@@ -8,7 +8,7 @@ function ChangePassword({ onClose }) {
     const [newPassword, setNewPassword] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-    const { logout } = useContext(AuthContext);
+    const { logout } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();

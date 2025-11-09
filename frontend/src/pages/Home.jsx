@@ -1,12 +1,12 @@
-import { useContext, useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, Outlet } from 'react-router-dom';
-import AuthContext from '../contexts/AuthContext.jsx';
 import Logout from '../components/Auth/Logout';
 import ChangePassword from '../components/Auth/ChangePassword.jsx';
 import '../styles/HomePage.css';
 
 function Home () {
-    const { user, loading } = useContext(AuthContext);
+    const { user, loading } = useSelector(state => state.auth);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [showChangePassword, setShowChangePassword] = useState(false);
     const [headerTitle, setHeaderTitle] = useState('Trang Chủ');

@@ -1,12 +1,12 @@
 import { useContext, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthContext from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import { updateProfileImage, updateProfileName, deleteUser } from '../../api/api.js';
 import '../../styles/ProfilePage.css';
 import { Pencil } from 'lucide-react';
 
 function Profile() {
-    const { user, login, logout } = useContext(AuthContext);
+    const { user, login, logout } = useAuth();
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
 

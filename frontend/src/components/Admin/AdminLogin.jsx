@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../../api/api";
-import AuthContext from "../../contexts/AuthContext.jsx";
+import { useAuth } from "../../contexts/AuthContext.jsx";
 import "../../styles/LoginPage.css"
 
 function AdminLogin() {
@@ -10,7 +10,7 @@ function AdminLogin() {
     const [errors, setErrors] = useState("")
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { login } = useContext(AuthContext);
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         setLoading(true);
