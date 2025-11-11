@@ -6,8 +6,6 @@ const api = axios.create({
     baseURL,
     withCredentials: true
 });
-
-// Add response interceptor for handling token refresh
 let isRefreshing = false;
 let failedQueue = [];
 
